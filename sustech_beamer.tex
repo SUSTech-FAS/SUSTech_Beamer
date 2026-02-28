@@ -1,0 +1,90 @@
+\documentclass{beamer}
+\usepackage[fontset=none]{ctex}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+
+% 允许 URL 在任意位置换行
+\usepackage{xurl}
+
+% other packages
+\usepackage{latexsym,amsmath,xcolor,multicol,booktabs,calligra}
+\usepackage{graphicx,pstricks,listings,stackengine}
+\usepackage{tikz}
+\usepackage{SUSTech}
+
+\author{MingJun Li}
+\title{SUSTech\_Beamer}
+% \subtitle{Paper1: SafeSec Tropos: Joint security and safety requirements elicitation}
+\institute{Southern University of Science and Technology}
+\date{\the\year.\ifnum\month<10 0\fi\the\month.\ifnum\day<10 0\fi\the\day}
+
+% 定义 Logo 路径（修改此处即可更换全局 Logo）
+\newcommand{\SustechLogo}{lib/logo/院徽+中英文-左右英文一行-彩色.png}
+
+% defs
+\def\cmd#1{\texttt{\color{red}\footnotesize $\backslash$#1}}
+\def\env#1{\texttt{\color{blue}\footnotesize #1}}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{halfgray}{gray}{0.55}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\bfseries\color{deepblue},
+    emphstyle=\ttfamily\color{deepred},    % Custom highlighting style
+    stringstyle=\color{deepgreen},
+    numbers=left,
+    numberstyle=\small\color{halfgray},
+    rulesepcolor=\color{red!20!green!20!blue!20},
+    frame=shadowbox,
+}
+
+% 兼容首轮编译：若 .toc 尚未生成，给出提示而不是空白目录页
+\newcommand{\SafeTOC}[1][]{%
+    \IfFileExists{\jobname.toc}{%
+        \tableofcontents[#1]%
+    }{%
+        \centering\Large 目录生成中，请再编译一次
+    }%
+}
+
+
+\begin{document}
+
+% ============================================================================
+% 背景 Logo 水印参数设置（可自行调整）
+% ============================================================================
+\newcommand{\BgLogoPath}{lib/logo/校徽.png}  % Logo 路径
+\newcommand{\BgLogoOpacity}{0.06}      % 透明度 (0-1，越小越淡)
+\newcommand{\BgLogoScale}{0.9}         % 缩放比例
+\newcommand{\BgLogoXShift}{6.0cm}        % 水平位移（正值向右，负值向左）
+\newcommand{\BgLogoYShift}{0.5cm}        % 垂直位移（正值向上，负值向下）
+
+\begin{frame}
+    % 背景 Logo 水印（使用 TikZ 绘制）
+    \begin{tikzpicture}[remember picture, overlay]
+        \node[opacity=\BgLogoOpacity] at ([xshift=\BgLogoXShift, yshift=\BgLogoYShift]current page.center) {
+            \includegraphics[scale=\BgLogoScale]{\BgLogoPath}
+        };
+    \end{tikzpicture}
+    \titlepage
+    \begin{figure}[htbp]
+        \begin{center}
+            \includegraphics[scale = 0.4]{\SustechLogo}
+        \end{center}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \SafeTOC[sectionstyle=show,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+\end{frame}
+
+
+\input{subtex/section_prerequisites}
+
+\input{subtex/section_rwip_dynamics}
+
+\input{subtex/section_references}
+
+\end{document}

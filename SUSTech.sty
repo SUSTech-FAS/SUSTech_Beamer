@@ -1,0 +1,234 @@
+% ============================================================================
+% SUSTech Beamer 主题样式文件
+% 南方科技大学 (Southern University of Science and Technology) 演示文稿模板
+% ============================================================================
+
+% 声明这是一个 Beamer 演示模式的样式文件
+\mode<presentation>
+
+% =========================================================================
+% 英文字体设置
+% =========================================================================
+\setmainfont[
+  Path=font/charter/,
+  UprightFont=Charter Regular.ttf,
+  BoldFont=Charter Bold.ttf,
+  ItalicFont=Charter Italic.ttf,
+  BoldItalicFont=Charter Bold Italic.ttf
+]{Charter}
+
+\setsansfont[
+  Path=font/charter/,
+  UprightFont=Charter Regular.ttf,
+  BoldFont=Charter Bold.ttf,
+  ItalicFont=Charter Italic.ttf,
+  BoldItalicFont=Charter Bold Italic.ttf
+]{Charter}
+
+% 数学字体设置
+\usepackage{unicode-math}
+\setmathfont[Path=font/latin-modern-math/]{latinmodern-math.otf}
+% latinmodern-math has no native bold upright shape; map b/n to m/n explicitly.
+\DeclareFontShape{TU}{latinmodern-math.otf(0)}{b}{n}{<->ssub * latinmodern-math.otf(0)/m/n}{}
+\DeclareFontShape{TU}{latinmodern-math.otf(1)}{b}{n}{<->ssub * latinmodern-math.otf(1)/m/n}{}
+\DeclareFontShape{TU}{latinmodern-math.otf(2)}{b}{n}{<->ssub * latinmodern-math.otf(2)/m/n}{}
+\DeclareFontShape{TU}{latinmodern-math.otf(3)}{b}{n}{<->ssub * latinmodern-math.otf(3)/m/n}{}
+
+% 标题字体设置
+\newfontfamily\segoeuisemibold[Path=font/]{segoe-ui-semibold.ttf}
+\setbeamerfont{title}{family=\segoeuisemibold}
+\setbeamerfont{title in head/foot}{family=\segoeuisemibold}
+
+% 中文字体设置
+\setCJKmainfont[
+  Path=font/SourceHanSansSC/,
+  UprightFont=SourceHanSansSC-Regular.otf,
+  BoldFont=SourceHanSansSC-Bold.otf
+]{Source Han Sans SC}
+\setCJKsansfont[
+  Path=font/SourceHanSansSC/,
+  UprightFont=SourceHanSansSC-Regular.otf,
+  BoldFont=SourceHanSansSC-Bold.otf
+]{Source Han Sans SC}
+\setCJKmonofont[
+  Path=font/SourceHanSansSC/,
+  UprightFont=SourceHanSansSC-Regular.otf,
+  BoldFont=SourceHanSansSC-Bold.otf
+]{Source Han Sans SC}
+
+
+
+
+% ============================================================================
+
+% ============================================================================
+% 基础设置
+% ============================================================================
+
+% 定义一个条件判断：是否显示节标题头
+\newif\ifbeamer@secheader
+\beamer@secheaderfalse  % 默认不显示
+
+%\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}
+\ProcessOptionsBeamer  % 处理传入的选项
+
+% ============================================================================
+% 外部主题设置 (Outer Theme) - 控制页面整体布局
+% ============================================================================
+
+% 使用 smoothbars 外部主题
+% - footline=authorinstitutetitle: 页脚显示作者、机构、标题
+% - subsection=false: 不在导航栏显示小节
+\useoutertheme[footline=authorinstitutetitle,subsection=false]{smoothbars}
+
+% 隐藏顶部导航栏
+\setbeamertemplate{headline}{}
+
+% ============================================================================
+% 自定义页脚模板 - 显示作者、机构、标题和页码
+% ============================================================================
+\makeatletter
+
+% 定义页码分隔符，默认为 "/"
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+% 自定义页脚布局
+\setbeamertemplate{footline} 
+  {%
+    % 上分隔线
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    
+    % 第一行：左侧显示作者，右侧显示机构
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+      \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+      \hfill%
+      {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
+    \end{beamercolorbox}%
+    
+    % 第二行：左侧显示标题，右侧显示页码（当前页/总页数）
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      {\usebeamerfont{title in head/foot}\insertshorttitle}%
+      \hfill%
+      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    \end{beamercolorbox}%
+    
+    % 下分隔线
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    \end{beamercolorbox}
+  }
+\makeatother
+
+% ============================================================================
+% 内部主题设置 (Inner Theme) - 控制内容元素样式
+% ============================================================================
+
+% 使用 rectangles 内部主题：列表项目符号为方形
+\useinnertheme{rectangles}
+
+%\useoutertheme{default}
+%\useinnertheme[shadow=true]{rounded}
+
+% ============================================================================
+% 南科大官方 VI 配色定义
+% 参考南方科技大学视觉识别系统标准
+% ============================================================================
+
+\xdefinecolor{sustechOrange}{RGB}{237,108,0}    % 南科大橙 - 用于标志图形、色块/太TMD丑了
+\xdefinecolor{sustechGreen}{RGB}{0,63,67}       % 南科大墨绿 - 用于中英文字、标题
+\xdefinecolor{sustechCyan}{RGB}{43,183,179}     % 南科大天青 - 用于辅助配色
+
+% ============================================================================
+% 主题颜色设置
+% ============================================================================
+
+% --- 页脚和标题栏颜色（使用墨绿色）---
+\setbeamercolor{footline}{bg=sustechGreen}              % 页脚背景色
+\setbeamercolor{frametitle}{bg=sustechGreen,fg=white}   % 幻灯片标题：墨绿底白字
+\setbeamercolor{title}{bg=sustechGreen}                 % 封面标题背景色
+
+% --- 封面标题样式 ---
+% 使用默认的 Beamer 标题页模板，无阴影效果
+
+% --- 字体设置 ---
+\setbeamerfont{frametitle}{size=\large}                 % 标题字号
+\setbeamerfont{date}{size=\small}                       % 日期字号（较小）
+
+% --- 模板设置 ---
+\setbeamertemplate{navigation symbols}{}               % 取消注释可隐藏导航符号
+\setbeamertemplate{bibliography item}[text]             % 参考文献使用文字编号
+\setbeamertemplate{caption}[numbered]                   % 图表标题带编号
+
+% ============================================================================
+% 调色板设置 (Palette) - 控制导航栏渐变色
+% ============================================================================
+
+\setbeamercolor{palette primary}{use=structure,fg=white,bg=structure.fg}           % 主调色板
+\setbeamercolor{palette secondary}{use=structure,fg=white,bg=structure.fg!75!black} % 次级调色板（稍深）
+\setbeamercolor{palette tertiary}{use=structure,fg=white,bg=structure.fg!50!black}  % 第三级调色板（更深）
+\setbeamercolor{palette quaternary}{fg=white,bg=structure.fg!50!black}              % 第四级调色板
+
+%\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}
+\setbeamercolor{titlelike}{parent=palette primary}      % 标题类元素继承主调色板
+
+% ============================================================================
+% 内容块样式设置 (Blocks)
+% ============================================================================
+
+% --- 区块标题颜色（使用墨绿色）---
+\setbeamercolor{block title}{bg=sustechGreen,fg=white}                             % 普通区块标题：橙底白字
+\setbeamercolor*{block title example}{use={normal text,example text},bg=white,fg=sustechGreen}  % 示例区块标题：白底橙字
+
+% --- 其他元素 ---
+\setbeamercolor{fine separation line}{}                 % 细分隔线
+\setbeamercolor{item projected}{fg=white}               % 项目符号投影颜色
+
+% ============================================================================
+% 侧边栏样式设置 (Sidebar)
+% ============================================================================
+
+\setbeamercolor{palette sidebar primary}{use=normal text,fg=normal text.fg}
+\setbeamercolor{palette sidebar quaternary}{use=structure,fg=structure.fg}
+\setbeamercolor{palette sidebar secondary}{use=structure,fg=structure.fg}
+\setbeamercolor{palette sidebar tertiary}{use=normal text,fg=normal text.fg}
+%\setbeamercolor{palette sidebar quaternary}{fg=white}
+
+\setbeamercolor{section in sidebar}{fg=brown}           % 侧边栏当前节颜色
+\setbeamercolor{section in sidebar shaded}{fg=grey}     % 侧边栏非当前节颜色（灰色）
+\setbeamercolor{separation line}{}                      % 分隔线
+\setbeamercolor{sidebar}{bg=sustechGreen}               % 侧边栏背景色
+\setbeamercolor{sidebar}{parent=palette primary}
+
+% --- 结构元素颜色（项目符号、强调等使用墨绿色）---
+\setbeamercolor{structure}{fg=sustechGreen}            % 结构元素颜色（项目符号、链接等）
+
+\setbeamercolor{subsection in sidebar}{fg=brown}        % 侧边栏当前小节颜色
+\setbeamercolor{subsection in sidebar shaded}{fg=grey}  % 侧边栏非当前小节颜色
+
+% ============================================================================
+% 自动目录页设置
+% 在每个 section 和 subsection 开始时自动插入目录页
+% ============================================================================
+
+% 每个 section 开始时显示目录，当前节高亮，其他节灰色
+\AtBeginSection[]{
+	\begin{frame}
+		\SafeTOC[sectionstyle=show/shaded,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+	\end{frame}
+}
+
+% 每个 subsection 开始时显示目录
+\AtBeginSubsection[]{
+	\begin{frame}
+		\SafeTOC[sectionstyle=show/shaded,subsectionstyle=show/shaded/hide,subsubsectionstyle=show/shaded/hide]
+	\end{frame}
+}
+
+% ============================================================================
+% 结束模式声明
+% ============================================================================
+\mode
+<all>
