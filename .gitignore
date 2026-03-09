@@ -1,0 +1,6 @@
+output/*
+!output/sustech_beamer.pdf
+.latexmkrc
+.gitignore
+.vscode/settings.json
+.sharelatex-sync.env
