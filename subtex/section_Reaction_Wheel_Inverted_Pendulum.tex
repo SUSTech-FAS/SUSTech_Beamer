@@ -227,26 +227,93 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{带扰动补偿的实际控制律}
+\begin{frame}{观测 $\Delta$ 时关闭扰动观测器}
     \scriptsize
-    将扰动估计并入控制后，原文给出的实际输入力矩为
+    现在的目标不再是观测总扰动 $d$，而是在线观测安装偏移 $\Delta$。\\[0.4em]
+    因此控制结构改为：
+    \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item 关闭原文中的扰动观测器，即不再使用 $\hat d_1,\hat d_2$
+        \item 将所有含 $\Delta$ 的非线性项改为使用估计值 $\hat\Delta$
+        \item 把模型失配主要归因于角度偏移，而不是并入总扰动补偿
+    \end{itemize}
+    于是 FAS 导数链写为
     \[
-    \tau=
-    \frac{1}{b_1 b(\ddot y_1)}
+    \ddot y_1 \approx \ddot y_{d1} + c_1 \sin(q_1+\hat\Delta),
+    \]
+    对应的控制器内部模型使用
+    \[
+    f_{\hat\Delta}(\ddot y_1,\dot y_1),\qquad b_{\hat\Delta}(\ddot y_1).
+    \]
+    这样设计的前提是：当前阶段优先辨识/观测 $\Delta$，暂不同时估计外部扰动。
+\end{frame}
+
+\begin{frame}{\texorpdfstring{$\Delta$}{Delta} 观测器设计}
+    \scriptsize
+    这里不使用残差观测器，而采用更直接的 $\Delta$ 估计方法。\\[0.4em]
+    在平衡附近，由
+    \[
+    \ddot q_1 \approx M\sin(q_1+\Delta)-b_1\tau
+    \]
+    且小角度近似 $\sin(q_1+\Delta)\approx q_1+\Delta$，可得到三种做法：
+    \begin{itemize}
+        \setlength{\itemsep}{0.35em}
+        \item \textbf{方案 A: 静态估计}
+        \[
+        \hat\Delta \approx \frac{b_1}{M}\tau - q_1.
+        \]
+        \item \textbf{方案 B: 带一点动态的最小二乘}
+        \[
+        \hat\Delta =
+        \frac{\sum \cos q_1 \left(\ddot q_1+b_1\tau-M\sin q_1\right)}
+        {M\sum \cos^2 q_1}.
+        \]
+        \item \textbf{方案 C: 在线更新}
+        令
+        \[
+        z=\ddot q_1+b_1\tau-M\sin q_1,
+        \qquad
+        \eta = M\Delta,
+        \]
+        则可用
+        \[
+        \dot{\hat \eta}
+        =
+        \gamma \cos q_1 \bigl(z-\hat\eta\cos q_1\bigr),
+        \qquad \hat\Delta=\frac{\hat\eta}{M}.
+        \]
+    \end{itemize}
+    实际使用上可以先用方案 A 快速初始化，再用方案 B 或 C 做修正。
+\end{frame}
+
+\begin{frame}{考虑偏移 $\Delta$ 的实际力矩控制律}
+    \scriptsize
+    在观测 $\Delta$ 且关闭扰动观测器时，控制器中不再出现 $\hat d_1,\hat d_2$，而是直接使用 $\hat\Delta$：
+    \[
+    \tau_{\hat\Delta}=
+    \frac{1}{b_1 b_{\hat\Delta}(\ddot y_1)}
     \left[
-    f(\ddot y_1,\dot y_1) + \sum_{i=0}^{3} K_i \hat y_1^{(i)}
+    f_{\hat\Delta}(\ddot y_1,\dot y_1)+\sum_{i=0}^{3}K_i \hat y_1^{(i)}
     \right]
-    +\frac{M}{b_1}\sin(q_1)+\hat d_1-\hat d_2.
+    +\frac{M}{b_1}\sin(q_1+\hat\Delta).
     \]
-    代回子 FAS 后得到受扰闭环
+    若展开偏移项，则
     \[
-    y_1^{(4)}+\sum_{i=0}^{3}K_i y_1^{(i)}+\Delta(t,y_1,\dot y_1,\ddot y_1)=0,
+    \tau_{\hat\Delta}=
+    \frac{1}{b_1 b_{\hat\Delta}(\ddot y_1)}
+    \left[
+    f_{\hat\Delta}+\sum_{i=0}^{3}K_i \hat y_1^{(i)}
+    \right]
+    +\frac{M}{b_1}
+    \bigl(\sin q_1\cos\hat\Delta+\cos q_1\sin\hat\Delta\bigr).
     \]
-    其中扰动项为
-    \[
-    \Delta=(b_1\tilde d_1-b_1\tilde d_2)b(\ddot y_1)-K_2\tilde d_1.
-    \]
-    实际实现时，$\hat d$ 由扰动观测器在线给出，用于补偿约束失配和外部扰动。
+    与前一版相比，现在控制律的变化只有两点：
+    \begin{itemize}
+        \setlength{\itemsep}{0.3em}
+        \item 用 $\hat\Delta$ 替代固定的 $\Delta$
+        \item 去掉 $\hat d_1-\hat d_2$ 这一扰动补偿通道
+    \end{itemize}
+    这样更适合当前“先估偏移、后谈扰动”的实验路线。
 \end{frame}
 
 \begin{frame}{考虑偏移 $\Delta$ 的名义控制律}
@@ -287,48 +354,6 @@
     K_2=6\omega_c^2,\;
     K_3=4\omega_c.
     \]
-\end{frame}
-
-\begin{frame}{考虑偏移 $\Delta$ 的实际力矩控制律}
-    \scriptsize
-    由
-    \[
-    \ddot y_1 = \ddot y_{d1} + c_1\sin(q_1+\Delta)+c_2 d_1
-    \]
-    可见在执行层，原文中的补偿项
-    \[
-    \frac{M}{b_1}\sin(q_1)
-    \]
-    应同步改为
-    \[
-    \frac{M}{b_1}\sin(q_1+\Delta).
-    \]
-    因此带扰动观测器的实际输入力矩可写成
-    \[
-    \tau_\Delta=
-    \frac{1}{b_1 b_\Delta(\ddot y_1)}
-    \left[
-    f_\Delta(\ddot y_1,\dot y_1)+\sum_{i=0}^{3}K_i \hat y_1^{(i)}
-    \right]
-    +\frac{M}{b_1}\sin(q_1+\Delta)+\hat d_1-\hat d_2.
-    \]
-    若进一步展开偏移角，则
-    \[
-    \tau_\Delta=
-    \frac{1}{b_1 b_\Delta(\ddot y_1)}
-    \left[
-    f_\Delta+\sum_{i=0}^{3}K_i \hat y_1^{(i)}
-    \right]
-    +\frac{M}{b_1}\bigl(\sin q_1\cos\Delta+\cos q_1\sin\Delta\bigr)
-    +\hat d_1-\hat d_2.
-    \]
-    这说明偏移不会改变控制器设计框架，只会改变：
-    \begin{itemize}
-        \setlength{\itemsep}{0.3em}
-        \item FAS 映射中的非线性函数 $f,b$
-        \item 力矩控制中的重力补偿项
-        \item 可行参考轨迹约束中的正弦项
-    \end{itemize}
 \end{frame}
 
 \begin{frame}{论文结论与可借鉴点}
