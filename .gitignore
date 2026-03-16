@@ -1,5 +1,5 @@
 output/*
-!output/sustech_beamer.pdf
+*.pdf
 .latexmkrc
 .gitignore
 .vscode/settings.json
