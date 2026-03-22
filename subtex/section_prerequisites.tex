@@ -1,0 +1,126 @@
+\section{Prerequisites}
+
+\begin{frame}{Properties of Cross Product}
+    \begin{itemize}
+        \setlength{\itemsep}{0.5em}
+        \setlength{\parskip}{0.2em}
+        \item Anti-commutativity: $\mathbf{a} \times \mathbf{b} = -\mathbf{b} \times \mathbf{a}$
+        \item Distributivity: $\mathbf{a} \times (\mathbf{b} + \mathbf{c}) = \mathbf{a} \times \mathbf{b} + \mathbf{a} \times \mathbf{c}$
+        \item Scalar multiplication: $(k\mathbf{a}) \times \mathbf{b} = k(\mathbf{a} \times \mathbf{b}) = \mathbf{a} \times (k\mathbf{b})$
+        \item Orthogonality: $(\mathbf{a} \times \mathbf{b}) \perp \mathbf{a}$, $(\mathbf{a} \times \mathbf{b}) \perp \mathbf{b}$
+        \item Magnitude ($\theta$ is the angle): $\|\mathbf{a} \times \mathbf{b}\| = \|\mathbf{a}\|\|\mathbf{b}\|\sin\theta$
+        \item Geometric meaning: magnitude equals the area of parallelogram spanned by $\mathbf{a}$, $\mathbf{b}$
+        \item \textcolor{red}{\textbf{Vector triple product}: $\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) = \mathbf{b}(\mathbf{a} \cdot \mathbf{c}) - \mathbf{c}(\mathbf{a} \cdot \mathbf{b})$}
+        \item \textcolor{red}{\textbf{Scalar triple product}: $\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c}) = \mathbf{b} \cdot (\mathbf{c} \times \mathbf{a}) = \mathbf{c} \cdot (\mathbf{a} \times \mathbf{b})$}
+        \item Parallelepiped volume: $V = |\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c})|$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Right-Hand Rule and Signed Volume}
+    \begin{itemize}
+        \setlength{\itemsep}{0.6em}
+        \setlength{\parskip}{0.2em}
+        \item \textbf{Right-hand rule}: Curl fingers from $\mathbf{a}$ to $\mathbf{b}$, thumb points in direction of $\mathbf{a} \times \mathbf{b}$
+        \item \textbf{Signed volume}: $V = \mathbf{a} \cdot (\mathbf{b} \times \mathbf{c})$ is a signed scalar
+        \begin{itemize}
+            \item $V > 0$: $\mathbf{a}$, $\mathbf{b}$, $\mathbf{c}$ form a right-handed system
+            \item $V < 0$: $\mathbf{a}$, $\mathbf{b}$, $\mathbf{c}$ form a left-handed system
+            \item $V = 0$: the three vectors are coplanar
+        \end{itemize}
+        \item \textbf{Geometric interpretation}:
+        \begin{itemize}
+            \item $\mathbf{b} \times \mathbf{c}$: normal vector of base, magnitude = base area
+            \item $\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c})$: projection of $\mathbf{a}$ onto normal $\times$ base area = volume
+        \end{itemize}
+        \item \textbf{Actual volume}: $|V| = |\mathbf{a} \cdot (\mathbf{b} \times \mathbf{c})|$ (take absolute value)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quaternion Basics}
+    \begin{itemize}
+        \setlength{\itemsep}{0.55em}
+        \setlength{\parskip}{0.2em}
+        \item A quaternion is written as $\mathbf{q} = [w,\,\mathbf{v}]^T = w + v_x\mathbf{i} + v_y\mathbf{j} + v_z\mathbf{k}$
+        % \item \textbf{Unit quaternion}: $\|\mathbf{q}\|=1$ represents a 3D rotation
+        \item \textbf{Conjugate}: $\mathbf{q}^* = [w,\,-\mathbf{v}]^T$, \quad \textbf{Inverse}: $\mathbf{q}^{-1}=\frac{\mathbf{q}^*}{\|\mathbf{q}\|^2}$
+        \item \textbf{Hamilton product} (composition):
+        if $\mathbf{q}_1=[w_1,\,\mathbf{v}_1]^T$, $\mathbf{q}_2=[w_2,\,\mathbf{v}_2]^T$,
+        $\mathbf{q}_1\otimes\mathbf{q}_2=
+        \big[w_1w_2-\mathbf{v}_1^T\mathbf{v}_2,\,
+        w_1\mathbf{v}_2+w_2\mathbf{v}_1+\mathbf{v}_1\times\mathbf{v}_2\big]^T$
+        \item Multiplication is \textcolor{red}{\textbf{non-commutative}}: $\mathbf{q}_1\otimes\mathbf{q}_2 \neq \mathbf{q}_2\otimes\mathbf{q}_1$
+        \item Axis-angle to quaternion: for axis $\mathbf{u}$ ($\|\mathbf{u}\|=1$), angle $\theta$,
+        $\mathbf{q}=\left[\cos\frac{\theta}{2},\,\mathbf{u}\sin\frac{\theta}{2}\right]^T$
+        \item Rotate vector $\mathbf{v}$ by unit quaternion: $\mathbf{v}'=\mathbf{q}\otimes[0,\mathbf{v}]\otimes\mathbf{q}^*$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quaternion Basics}
+    \begin{itemize}
+        \setlength{\itemsep}{0.5em}
+        \setlength{\parskip}{0.2em}
+        \item Let $\mathbf{q}=[w,\,\mathbf{v}]^T$, with
+        $[\mathbf{v}]_\times=\begin{bmatrix}0&-v_z&v_y\\ v_z&0&-v_x\\ -v_y&v_x&0\end{bmatrix}$
+        \item \textbf{Left multiplication matrix}
+        $$L(\mathbf{q})=\begin{bmatrix}
+        w & -\mathbf{v}^T\\
+        \mathbf{v} & w\mathbf{I}_3+[\mathbf{v}]_\times
+        \end{bmatrix}=\begin{bmatrix}
+        w & -v_x & -v_y & -v_z\\
+        v_x & w & -v_z & v_y\\
+        v_y & v_z & w & -v_x\\
+        v_z & -v_y & v_x & w
+        \end{bmatrix}$$
+        \item \textbf{Right multiplication matrix}
+        $$R(\mathbf{q})=\begin{bmatrix}
+        w & -\mathbf{v}^T\\
+        \mathbf{v} & w\mathbf{I}_3-[\mathbf{v}]_\times
+        \end{bmatrix}=\begin{bmatrix}
+        w & -v_x & -v_y & -v_z\\
+        v_x & w & v_z & -v_y\\
+        v_y & -v_z & w & v_x\\
+        v_z & v_y & -v_x & w
+        \end{bmatrix}$$
+        \item For any quaternion $\mathbf{p}$:
+        $\mathbf{q}\otimes\mathbf{p}=L(\mathbf{q})\mathbf{p}$, \quad
+        $\mathbf{p}\otimes\mathbf{q}=R(\mathbf{q})\mathbf{p}$
+        \item \textcolor{red}{\textbf{Key identity}}: $L(\mathbf{q})\mathbf{p}=R(\mathbf{p})\mathbf{q}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quaternion Basics}
+    \begin{itemize}
+        \setlength{\itemsep}{0.55em}
+        \setlength{\parskip}{0.2em}
+        \item Let angular velocity be $\boldsymbol{\omega}\in\mathbb{R}^3$, and pure quaternion
+        $\boldsymbol{\omega}_q=[0,\,\boldsymbol{\omega}]^T$
+        \item \textbf{Quaternion kinematics} (body-frame angular velocity $\boldsymbol{\omega}^B$):
+        $$\dot{\mathbf{q}}=\frac{1}{2}\,\mathbf{q}\otimes[0,\boldsymbol{\omega}^B]
+        =\frac{1}{2}L(\mathbf{q})\begin{bmatrix}0\\\boldsymbol{\omega}^B\end{bmatrix}$$
+        \item Equivalent form (inertial-frame angular velocity $\boldsymbol{\omega}^I$):
+        $$\dot{\mathbf{q}}=\frac{1}{2}[0,\boldsymbol{\omega}^I]\otimes\mathbf{q}
+        =\frac{1}{2}R(\mathbf{q})\begin{bmatrix}0\\\boldsymbol{\omega}^I\end{bmatrix}$$
+        \item Recover angular velocity from $\mathbf{q},\dot{\mathbf{q}}$:
+        $$[0,\boldsymbol{\omega}^B]=2\,\mathbf{q}^*\otimes\dot{\mathbf{q}},\qquad
+        [0,\boldsymbol{\omega}^I]=2\,\dot{\mathbf{q}}\otimes\mathbf{q}^*$$
+        \item \textcolor{red}{\textbf{Note}}: choose one frame convention and keep it consistent in the whole derivation.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quaternion Basics}
+    \begin{itemize}
+        \setlength{\itemsep}{0.55em}
+        \setlength{\parskip}{0.2em}
+        \item \textbf{Error quaternion} between desired attitude $\mathbf{q}_d$ and current attitude $\mathbf{q}$:
+        $$\mathbf{q}_e=\mathbf{q}_d\otimes\mathbf{q}^{-1}=\mathbf{q}_d\otimes\mathbf{q}^*\quad(\|\mathbf{q}\|=1)$$
+        \item Interpretation: if $\mathbf{q}_e=[w_e,\,\mathbf{v}_e]^T=\left[\cos\frac{\theta_e}{2},\,\mathbf{u}_e\sin\frac{\theta_e}{2}\right]^T$,
+        then $(\mathbf{u}_e,\theta_e)$ is the rotation from current to desired attitude
+        \item \textbf{Shortest-arc convention}: because $\mathbf{q}$ and $-\mathbf{q}$ represent same rotation,
+        enforce $w_e\ge 0$ (or flip sign when $w_e<0$)
+        \item Common control error vector:
+        $$\mathbf{e}_R=2\,\mathrm{sgn}(w_e)\,\mathbf{v}_e\;\approx\;\theta_e\mathbf{u}_e\quad(\theta_e\text{ small})$$
+        \item Left/right invariant forms (depending on convention):
+        $$\mathbf{q}_e^R=\mathbf{q}_d\otimes\mathbf{q}^{-1},\qquad
+        \mathbf{q}_e^L=\mathbf{q}^{-1}\otimes\mathbf{q}_d$$
+    \end{itemize}
+\end{frame}
