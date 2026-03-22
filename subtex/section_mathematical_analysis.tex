@@ -1,44 +1,30 @@
 \section{Mathematical Analysis}
 
-\begin{frame}{Limits and Continuity}
+\begin{frame}{Metric Space Definitions I}
+    \small
+    Let $X$ be a metric space. All points and sets mentioned below are understood to be elements and subsets of $X$.
     \begin{itemize}
-        \setlength{\itemsep}{0.5em}
-        \setlength{\parskip}{0.2em}
-        \item A function $f(x)$ is continuous at $x=a$ if
-        \[
-        \lim_{x \to a} f(x) = f(a)
-        \]
-        \item Continuity ensures small input changes produce small output changes.
-        \item Typical discontinuities include removable, jump, and infinite discontinuities.
+        \setlength{\itemsep}{0.4em}
+        \item A neighborhood of $p$ is a set $N_r(p)$ consisting of all $q$ such that $d(p,q) < r$, for some $r > 0$. The number $r$ is called the radius of $N_r(p)$.
+        \item A point $p$ is a limit point of the set $E$ if every neighborhood of $p$ contains a point $q \ne p$ such that $q \in E$.
+        \item If $p \in E$ and $p$ is not a limit point of $E$, then $p$ is called an isolated point of $E$.
+        \item $E$ is closed if every limit point of $E$ is a point of $E$.
+        \item A point $p$ is an interior point of $E$ if there is a neighborhood $N$ of $p$ such that $N \subset E$.
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Derivative and Monotonicity}
+\begin{frame}{Metric Space Definitions II}
+    \small
+    Let $X$ be a metric space and let $E \subset X$.
     \begin{itemize}
-        \setlength{\itemsep}{0.5em}
-        \setlength{\parskip}{0.2em}
-        \item The derivative is defined by
-        \[
-        f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}
-        \]
-        \item If $f'(x) > 0$ on an interval, then $f(x)$ is increasing there.
-        \item If $f'(x) < 0$ on an interval, then $f(x)$ is decreasing there.
-        \item Critical points satisfy $f'(x)=0$ or $f'(x)$ does not exist.
+        \setlength{\itemsep}{0.45em}
+        \item $E$ is open if every point of $E$ is an interior point of $E$.
+        \item The complement of $E$ (denoted by $E^c$) is the set of all points $p \in X$ such that $p \notin E$.
+        \item $E$ is perfect if $E$ is closed and if every point of $E$ is a limit point of $E$.
+        \item $E$ is bounded if there is a real number $M$ and a point $q \in X$ such that $d(p,q) < M$ for all $p \in E$.
+        \item $E$ is dense in $X$ if every point of $X$ is a limit point of $E$, or a point of $E$ (or both).
     \end{itemize}
-\end{frame}
 
-\begin{frame}{Integral and Fundamental Theorem}
-    \begin{itemize}
-        \setlength{\itemsep}{0.5em}
-        \setlength{\parskip}{0.2em}
-        \item The definite integral measures signed area:
-        \[
-        \int_a^b f(x)\,dx
-        \]
-        \item If $F'(x)=f(x)$, then
-        \[
-        \int_a^b f(x)\,dx = F(b)-F(a)
-        \]
-        \item Differentiation and integration are linked by the fundamental theorem of calculus.
-    \end{itemize}
+    \vspace{0.6em}
+    In $R^1$ neighborhoods are segments, whereas in $R^2$ neighborhoods are interiors of circles.
 \end{frame}
