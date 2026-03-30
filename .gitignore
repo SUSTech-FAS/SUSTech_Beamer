@@ -4,3 +4,4 @@ output/*
 .gitignore
 .vscode/settings.json
 .sharelatex-sync.env
+.DS_Store
